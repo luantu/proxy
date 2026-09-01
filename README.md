@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | `greatfire-domains.yaml` | YAML（`behavior: domain`，`+.domain` 前缀） | Mihomo / Clash rule-provider，子域名通配 |
 | `greatfire-domains.txt` | 纯文本（每行一个域名） | 简单列表 / 脚本批量处理 |
+| `scripts/override-greatfire-provider.js` | JavaScript 覆写脚本 | 自动注入 rule-provider 并在 rules 首条插入引用（Mihomo Party / Clash Verge Rev） |
 
 - 域名总数：**17,651**
 - 数据来源：`greatfire-feilian-fz-int-results.csv`（GreatFire 对指定站点集合的连通性探测，含 FZ-INT 翻墙白名单站点）
@@ -44,6 +45,22 @@ rules:
 ```
 https://raw.githubusercontent.com/luantu/corplink-proxy-list/main/greatfire-domains.txt
 ```
+
+## 覆写脚本（客户端自动注入）
+
+`scripts/override-greatfire-provider.js` 是面向客户端覆写机制的 JavaScript 脚本，无需手工编辑配置文件即可完成注入：
+
+1. 向 `rule-providers` 注入上面的 `greatfire` 定义（已存在则跳过）；
+2. 在 `rules` **第一条**插入 `RULE-SET,greatfire,SG-OpenAI`（已存在则跳过）。
+
+**幂等**：客户端每次刷新配置都会执行脚本，重复执行不会产生重复条目。
+
+使用方式：
+
+- **Mihomo Party**：设置 → 覆写 → 脚本 → 新建，粘贴脚本内容；
+- **Clash Verge Rev**：设置 → 全局扩展脚本，粘贴脚本内容。
+
+> 前提：你的配置中需已存在名为 `SG-OpenAI` 的策略组（或按需修改脚本中的策略组名）。
 
 ## 数据格式说明
 
