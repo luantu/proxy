@@ -1,0 +1,14 @@
+# corplink-proxy-list 引用示例（Mihomo / Clash）
+# 复制本文件中的 rule-providers 与 rules 片段到你的 config.yaml 即可。
+
+rule-providers:
+  greatfire:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/luantu/corplink-proxy-list/main/greatfire-domains.yaml"
+    path: ./ruleset/greatfire-domains.yaml
+    interval: 86400
+
+rules:
+  - RULE-SET,greatfire,SG-PROXY
+  - MATCH,DIRECT
